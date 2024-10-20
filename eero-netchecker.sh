@@ -1,4 +1,18 @@
 #!/bin/bash
+if [[ "$1" == "help" ]]
+then
+echo "Usage: $0 [options]"
+echo "Options:"
+echo "bg        Run in the background"
+echo "nowrite   Do not keep outputing time left in the console"
+exit 0
+fi
+if [[ "$1" == "bg" ]]
+then
+echo "Starting EEROPortal bypass in the background"
+nohup $0 nowrite &
+exit 0
+fi
 export duration=3600
 # Function to check for internet connection
 check_internet() {
@@ -15,7 +29,8 @@ relaunch_script() {
     echo "No internet detected. Restarting the script..."
     echo "Reconnection in progress" > ~/wan-timer.txt
     ./eeroportal-onreconnect.sh down
-    python3 eeroportal-bypass.py
+    export DISPLAY=:99
+    xvfb-run python3 eeroportal-bypass.py
     ./eeroportal-onreconnect.sh up
     export duration=3600
 }
@@ -29,8 +44,11 @@ while true; do
 
     # Sleep for 10 seconds before checking again
     sleep 10
+    if [[ "$1" != "nowrite" ]]
+    then
     printf "${duration} seconds left before reconnection"
     echo ""
+    fi
     echo $duration seconds left before reconnection > ~/wan-timer.txt
     duration=$(expr $duration - 10)
 done
