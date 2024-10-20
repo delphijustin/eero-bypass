@@ -1,0 +1,13 @@
+[Unit]
+Description=delphijustin EERO Bypass
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/eero-netchecker.sh nowrite
+Restart=on-failure
+User=justin
+Group=justin
+
+[Install]
+WantedBy=multi-user.target
