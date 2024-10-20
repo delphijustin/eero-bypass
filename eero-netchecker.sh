@@ -28,10 +28,10 @@ check_internet() {
 relaunch_script() {
     echo "No internet detected. Restarting the script..."
     echo "Reconnection in progress" > ~/wan-timer.txt
-    ./eeroportal-onreconnect.sh down
+    /usr/local/bin/eero-onreconnect.sh down
     export DISPLAY=:99
-    xvfb-run python3 eeroportal-bypass.py
-    ./eeroportal-onreconnect.sh up
+    xvfb-run python3 /usr/local/bin/eero-bypass.py
+    /usr/local/bin/eero-onreconnect.sh up
     export duration=3600
 }
 
