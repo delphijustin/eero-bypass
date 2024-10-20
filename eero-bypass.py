@@ -1,54 +1,39 @@
-#!/bin/bash
-if [[ "$1" == "help" ]]
-then
-echo "Usage: $0 [options]"
-echo "Options:"
-echo "bg        Run in the background"
-echo "nowrite   Do not keep outputing time left in the console"
-exit 0
-fi
-if [[ "$1" == "bg" ]]
-then
-echo "Starting EEROPortal bypass in the background"
-nohup $0 nowrite &
-exit 0
-fi
-export duration=3600
-# Function to check for internet connection
-check_internet() {
-    # Ping DNS server (9.9.9.9) 1 time with a timeout of 3 seconds
-    if ping -q -c 1 -W 3 9.9.9.9 >/dev/null; then
-        return 0  # Internet is up
-    else
-        return 1  # No internet
-    fi
-}
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
 
-# Function to relaunch the script
-relaunch_script() {
-    echo "No internet detected. Restarting the script..."
-    echo "Reconnection in progress" > ~/wan-timer.txt
-    ./eeroportal-onreconnect.sh down
-    export DISPLAY=:99
-    xvfb-run python3 eeroportal-bypass.py
-    ./eeroportal-onreconnect.sh up
-    export duration=3600
-}
 
-# Main loop to monitor the internet connection
-while true; do
-    if ! check_internet; then
-        # If no internet, relaunch the script
-        relaunch_script
-    fi
+# Set up Chrome options to run in headless mode
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # Enable headless mode
+chrome_options.add_argument("--no-sandbox")  # Required in some environments
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-gpu")  # Disable GPU hardware acceleration
 
-    # Sleep for 10 seconds before checking again
-    sleep 10
-    if [[ "$1" != "nowrite" ]]
-    then
-    printf "${duration} seconds left before reconnection"
-    echo ""
-    fi
-    echo $duration seconds left before reconnection > ~/wan-timer.txt
-    duration=$(expr $duration - 10)
-done
+# Define the path to your ChromeDriver
+chrome_driver_path = "/usr/bin/chromedriver"
+
+# Set up the Service object
+service = Service(chrome_driver_path)
+
+# Initialize the WebDriver
+driver = webdriver.Chrome(service=service)
+# Open the captive portal page
+driver.get('http://detectportal.firefox.com/success.txt')
+# Find the button by its HTML attributes (e.g., ID, class, or name)
+button = driver.find_element(By.CLASS_NAME, 'btn')
+
+# Simulate button click
+button.click()
+
+# Optional: wait for page load, interaction
+time.sleep(5)  # Wait 15 seconds for demo purposes
+button1 = driver.find_element(By.CLASS_NAME, 'btn')
+button1.click()
+
+time.sleep(7)
+# Close browser
+driver.quit()
