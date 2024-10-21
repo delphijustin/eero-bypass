@@ -6,4 +6,5 @@ rm /usr/local/bin/eero-netchecker.sh
 if [[ "$1" == "all" ]]
 then
 rm /usr/local/bin/eero-onreconnect.sh
+rm /etc/eero-bypass.conf
 fi
