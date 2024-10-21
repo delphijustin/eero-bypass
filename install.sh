@@ -12,6 +12,7 @@ USERNAME=${SUDO_USER:-$USER}
 apt install -y python3-selenium xvfb
 
 # Copy necessary files to /usr/local/bin
+cp eero-bypass.conf /etc/eero-bypass.conf
 cp eero-bypass.py /usr/local/bin/
 cp eero-netchecker.sh /usr/local/bin/
 cp eero-onreconnect.sh /usr/local/bin/
@@ -36,3 +37,4 @@ echo "To start the service type:"
 echo "sudo systemctl start eero-bypass.service"
 echo ""
 echo "Log file is located in ~/wan-timer.txt"
+echo "Before starting the service you may want to edit /etc/eero-bypass.conf"
