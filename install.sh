@@ -9,6 +9,7 @@ cat eero-bypass.service.default | sed "s/user_name/$2/g" > /etc/systemd/system/e
 chmod +x /usr/local/bin/eero-netchecker.sh
 chmod +x /usr/local/bin/eero-onreconnect.sh
 echo "Has not written to this file." > /root/wan-timer.txt
+chmod 333 /root/wan-timer.txt
 systemctl enable eero-bypass.service
 echo ""
 echo "To start the service type:"
