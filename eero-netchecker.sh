@@ -1,5 +1,4 @@
 #!/bin/bash
-sleep_seconds=0
 if [[ "$1" == "help" ]]
 then
 echo "Usage: $0 [options]"
@@ -18,10 +17,8 @@ fi
 export duration=$eero_default_duration
 # Function to check for internet connection
 check_internet() {
-if [[ $SkipInternetCheck -gt 0 ]]
+if [[ "$SkipInternetCheck" == "1" ]]
 then
-sleep_seconds=$(expr $SkipInternetCheck * 60)
-sleep $sleep_seconds
 return 1
 fi
     if ping -q -c 1 -W 3 $ping_addr >/dev/null; then
@@ -33,7 +30,7 @@ fi
 
 # Function to relaunch the script
 relaunch_script() {
-if [[ "$sleep_seconds" == "0" ]]
+if [[ "$SkipInternetCheck" == "0" ]]
 then
     echo "No internet detected. Restarting the script..."
     echo "Reconnection in progress" > ~/wan-timer.txt
@@ -41,7 +38,7 @@ then
 fi
     export DISPLAY=:99
     xvfb-run python3 /usr/local/bin/eero-bypass.py
-    if [[ "$sleep_seconds" == "0" ]]
+    if [[ "$SkipInternetCheck" == "0" ]]
     then
     /usr/local/bin/eero-onreconnect.sh up
     fi
