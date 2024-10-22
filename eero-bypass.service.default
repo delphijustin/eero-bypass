@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/eero-netchecker.sh nowrite
+ExecStart=xvfb-run /usr/local/bin/eero-netchecker.sh nowrite
 Restart=on-failure
 User=user_name
 Group=user_name
