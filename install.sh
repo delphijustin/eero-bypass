@@ -27,6 +27,8 @@ chmod +x /usr/local/bin/eero-onreconnect.sh
 # Create a log file and set appropriate permissions
 echo "Has not written to this file." > ~/wan-timer.txt
 chmod 666 ~/wan-timer.txt
+touch ~/eero-clicker.log
+chmod 666 ~/eero-clicker.log
 
 # Enable the service to start at boot
 systemctl enable eero-bypass.service
