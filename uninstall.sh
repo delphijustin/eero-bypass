@@ -7,4 +7,6 @@ if [[ "$1" == "all" ]]
 then
 rm /usr/local/bin/eero-onreconnect.sh
 rm /etc/eero-bypass.conf
+rm ~/wan-timer.txt
+rm ~/eero-clicker.log
 fi
