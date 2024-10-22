@@ -30,6 +30,18 @@ chmod 666 ~/wan-timer.txt
 touch ~/eero-clicker.log
 chmod 666 ~/eero-clicker.log
 
+# Path to the journald configuration file
+JOURNALD_CONF="/etc/systemd/journald.conf"
+
+# Ensure SystemMaxUse is set
+sed -i 's/^#SystemMaxUse=.*$/SystemMaxUse=256K/' $JOURNALD_CONF
+
+# If SystemMaxUse line doesn't exist, add it at the end
+grep -q "^SystemMaxUse=" $JOURNALD_CONF || echo "SystemMaxUse=256K" | tee -a $JOURNALD_CONF
+
+# Restart the journald service to apply changes
+ systemctl restart systemd-journald
+ 
 # Enable the service to start at boot
 systemctl enable eero-bypass.service
 
