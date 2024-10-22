@@ -37,7 +37,7 @@ then
     /usr/local/bin/eero-onreconnect.sh down
 fi
     export DISPLAY=:99
-    xvfb-run python3 /usr/local/bin/eero-bypass.py
+    xvfb-run python3 /usr/local/bin/eero-bypass.py > ~/eero-clicker.log
     if [[ "$SkipInternetCheck" == "0" ]]
     then
     /usr/local/bin/eero-onreconnect.sh up
