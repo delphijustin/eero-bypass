@@ -15,6 +15,11 @@ nohup $0 nowrite &
 exit 0
 fi
 export duration=$eero_default_duration
+if [[ "$WebReset" != "0" ]]
+then
+echo "Starting EERO Webserver on port 8101..."
+nohup ncat -k -l 8101 --sh-exec "/usr/local/bin/eero-webreset.sh" &
+fi
 # Function to check for internet connection
 check_internet() {
 if [[ "$SkipInternetCheck" == "1" ]]
