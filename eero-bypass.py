@@ -40,4 +40,3 @@ except:
 	eeroexcept=1
 # Close browser
 driver.quit()
-justin@eero-bypass:~$ 
