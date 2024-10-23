@@ -4,8 +4,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
-
-
+import os
+eeroexcept=0
 # Set up Chrome options to run in headless mode
 chrome_options = Options()
 chrome_options.add_argument("--headless")  # Enable headless mode
@@ -22,18 +22,22 @@ service = Service(chrome_driver_path)
 # Initialize the WebDriver
 driver = webdriver.Chrome(service=service)
 # Open the captive portal page
-driver.get('http://detectportal.firefox.com/success.txt')
+try:
+	driver.get('http://'+os.getenv('dns_ip'))
 # Find the button by its HTML attributes (e.g., ID, class, or name)
-button = driver.find_element(By.CLASS_NAME, 'btn')
+	button = driver.find_element(By.CLASS_NAME, 'btn')
 
 # Simulate button click
-button.click()
+	button.click()
 
 # Optional: wait for page load, interaction
-time.sleep(5)  # Wait 15 seconds for demo purposes
-button1 = driver.find_element(By.CLASS_NAME, 'btn')
-button1.click()
+	time.sleep(5)  # Wait 15 seconds for demo purposes
+	button1 = driver.find_element(By.CLASS_NAME, 'btn')
+	button1.click()
 
-time.sleep(7)
+	time.sleep(7)
+except:
+	eeroexcept=1
 # Close browser
 driver.quit()
+justin@eero-bypass:~$ 
