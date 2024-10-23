@@ -41,7 +41,10 @@ then
     echo "Reconnection in progress" > ~/wan-timer.txt
     /usr/local/bin/eero-onreconnect.sh down
 fi
+if [[ "$1" != "display0" ]]
+then
     export DISPLAY=:99
+fi
     python3 /usr/local/bin/eero-bypass.py > ~/eero-clicker.log
     if [[ "$SkipInternetCheck" == "0" ]]
     then
