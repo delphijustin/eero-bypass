@@ -45,11 +45,13 @@ grep -q "^SystemMaxUse=" $JOURNALD_CONF || echo "SystemMaxUse=256K" | tee -a $JO
  systemctl restart systemd-journald
  
 # Enable the service to start at boot
-systemctl enable eero-bypass.service
+#systemctl enable eero-bypass.service
+#Disabled as it may not do well as a service
 
 # Final messages
 echo ""
-echo "To start the service type:"
+echo "To install as a service(not recommended) type the following commands:"
+echo "sudo systemctl enable eero-bypass.service"
 echo "sudo systemctl start eero-bypass.service"
 echo ""
 echo "Log file is located in ~/wan-timer.txt"
