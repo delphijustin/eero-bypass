@@ -16,6 +16,7 @@ cp eero-bypass.conf /etc/eero-bypass.conf
 cp eero-bypass.py /usr/local/bin/
 cp eero-netchecker.sh /usr/local/bin/
 cp eero-onreconnect.sh /usr/local/bin/
+cp eero-webreset.sh /usr/local/bin/
 
 # Replace the username in the service file and place it in systemd
 cat eero-bypass.service.default | sed "s/user_name/$USERNAME/g" > /etc/systemd/system/eero-bypass.service
@@ -23,6 +24,7 @@ cat eero-bypass.service.default | sed "s/user_name/$USERNAME/g" > /etc/systemd/s
 # Make scripts executable
 chmod +x /usr/local/bin/eero-netchecker.sh
 chmod +x /usr/local/bin/eero-onreconnect.sh
+chmod +x /usr/local/bin/eero-webreset.sh
 
 # Create a log file and set appropriate permissions
 echo "Has not written to this file." > ~/wan-timer.txt
