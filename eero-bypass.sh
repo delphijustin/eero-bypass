@@ -1,2 +1,2 @@
 #!/bin/bash
-/usr/local/bini/eero-netchecker.sh display0
+/usr/local/bin/eero-netchecker.sh display0
