@@ -7,3 +7,4 @@ rm /etc/eero-bypass.conf
 rm ~/wan-timer.txt
 rm ~/eero-clicker.log
 fi
+rm ~/.config/autostart/eero-bypass.desktop
