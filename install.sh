@@ -49,7 +49,6 @@ cp eero-bypass.conf /etc/eero-bypass.conf
 cp eero-bypass.py /usr/local/bin/
 cp eero-bypass.sh /usr/local/bin/
 
-cat eero-bypass.service.default | sed "s/user_name/$USERNAME/g" > /etc/systemd/system/eero-bypass.service
 createDesktopFile
 # Make scripts executable
 chmod +x /usr/local/bin/eero-bypass.sh
