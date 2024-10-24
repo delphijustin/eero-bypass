@@ -1,5 +1,7 @@
 #!/bin/bash
 function createDesktopFile(){
+autostart_dir="/home/$USERNAME/.config/autostart"
+desktop_file="$autostart_dir/eero-bypass.desktop"
 read -p "Create X11 autostart file? type yes or no: " choice
 if [[ "$choice" == "yes" ]]
 then
@@ -8,7 +10,6 @@ if [ ! -d "$autostart_dir" ]; then
   echo "Created autostart directory: $autostart_dir"
 fi
 # Define the path of the .desktop file
-desktop_file="$autostart_dir/eero-bypass.desktop"
 desktop_entry="[Desktop Entry]
 Type=Application
 Name=EERO-Bypass
@@ -19,7 +20,6 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=true
 X-KDE-autostart-after=panel
 X-LXQt-autostart=true"
-autostart_dir="$HOME/.config/autostart"
 # Write the .desktop file
 echo "$desktop_entry" > "$desktop_file"
 
