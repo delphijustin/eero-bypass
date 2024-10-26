@@ -42,9 +42,10 @@ fi
 USERNAME=${SUDO_USER:-$USER}
 
 # Install dependencies
-apt install -y python3-selenium xvfb
+apt install -y python3-selenium ncat
 
 # Copy necessary files to /usr/local/bin
+cp eero-httpd.sh /usr/local/bin/
 cp eero-bypass.conf /etc/eero-bypass.conf
 cp eero-bypass.py /usr/local/bin/
 cp eero-bypass.sh /usr/local/bin/
@@ -52,12 +53,7 @@ cp eero-bypass.sh /usr/local/bin/
 createDesktopFile
 # Make scripts executable
 chmod +x /usr/local/bin/eero-bypass.sh
-
-# Create a log file and set appropriate permissions
-echo "Has not written to this file." > ~/wan-timer.txt
-chmod 666 ~/wan-timer.txt
-touch ~/eero-clicker.log
-chmod 666 ~/eero-clicker.log
+chmod +x /usr/local/bin/eero-httpd.sh
 
 createDesktopFile()
 # Final messages
