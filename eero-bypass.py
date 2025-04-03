@@ -36,6 +36,7 @@ service = Service(chrome_driver_path)
 
 # Initialize the WebDriver
 driver = webdriver.Chrome(service=service)
+
 def udpSend(op):
 	global lastOp
 	if UDPPORT == 0:
@@ -52,8 +53,13 @@ def udpSend(op):
 		eero_timercmd=f"EERO_TIMER{timeAlert}\n"
 		eero_timerbytes=eero_timercmd.encode("ascii")
 		sock.sendto(eero_timerbytes, (BROADCAST_IP, UDPPORT))
+	if op==4:
+		eero_seccmd=f"EERO_SEC{seconds_elapsed}\n"
+		eero_secbytes=eero_seccmd.encode("ascii")
+		sock.sendto(eero_secbytes, (BROADCAST_IP, UDPPORT))
 	time.sleep(5)
-	lastOp=op
+	if op!=4:
+		lastOp=op
 	sock.close()
 def resetConnection():
 	try:
@@ -77,11 +83,11 @@ def resetConnection():
 		time.sleep(5)  # Wait 5 seconds
 		button1 = driver.find_element(By.CLASS_NAME, 'btn')
 		button1.click()
-		udpSend(2)
+		udpSend(1)
 		time.sleep(7)
 		return 0
 	except:
-		udpSend(1)
+		udpSend(2)
 	return 1
 udpSend(0)
 while True:
@@ -97,9 +103,13 @@ while True:
 	olderror = newError
 	updatedAt = end_time.strftime("%m/%d/%Y,%I:%M:%S%p")
 	seconds_elapsed=int((end_time - start_time).total_seconds())
+	udpSend(4)
 	eeroTime=int(sys.argv[1])
-	if int(seconds_elapsed/60)==eeroTime-timeAlert:
-		udpSend(3)
-		time.sleep(55)
 	driver.execute_script(f"location.href='http://delphianserver.com/eerotest/?updatedAt={updatedAt}&time={seconds_elapsed}&limit={eeroTime}&pids={processIds}';")  # JavaScript to retry
 	time.sleep(int(sys.argv[7]))
+	try:
+		if driver.execute_script("return timeleft;")<timeAlert*60:
+			print(now.strftime("%H:%M:%S")+f" - WARNING INTERNET WILL RESET IN {timeAlert} minute(s)")
+			udpSend(3)
+	except:
+		pass
