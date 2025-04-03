@@ -52,10 +52,13 @@ cp eero-bypass.conf /etc/eero-bypass.conf
 cp eero-bypass.py /usr/local/bin/
 cp eero-bypass.sh /usr/local/bin/
 cp eerodefault.wav /usr/share/eero-bypass
+cp eeropopup.sh /usr/share/eero-bypass
 chmod +r /usr/share/eero-bypass/eerodefault.wav
+
 # Make scripts executable
 chmod +x /usr/local/bin/eero-bypass.sh
-
+chmod +rx /usr/share/eero-bypass/eeropopup.sh
+createDesktopFile
 # Final messages
 echo ""
 echo "Before starting the app you may want to edit /etc/eero-bypass.conf"
