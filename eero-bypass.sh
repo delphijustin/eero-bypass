@@ -1,28 +1,47 @@
 #!/bin/bash
 source /etc/eero-bypass.conf
-if [[ "$1" == "stop" ]]
+if [ "$1" == "udp" ]
 then
-if [[ "$2" != "auto" ]]
-then
-echo "THIS WILL KILL ALL PYTHON,NCAT AND CHROME PROCESSES"
-echo "Continue?"
-read -p "Type 1 for yes, 0 for no: " choice
-else
-choice=1
-fi
-if [[ "$choice" == "0" ]]
-then
+now=$(date +%T%p)
+read -t 5 eeroOp
+case "$eeroOp" in
+EERO_HELLO) notify-send "eeroBypass" "$now - eeroBypass service has started" ;;
+EERO_DISCONNECT) notify-send "eeroBypass" "$now - eero Router has disconnected" ;;
+EERO_RECONNECT) notify-send "eeroBypass" "$now - eero Router has been reconnected" ;;
+EERO_TIMER*)
+ timerwarning=$(echo "$eeroOp" | grep -o '[0-9]\+')
+ notify-send "eeroBypass" "$now - Internet will be lost in $timerwarning minutes"
+exit 0
+ ;;
+*)exit 1 ;;
+esac
+$soundPlayer /usr/share/eero-bypass/eerodefault.wav
 exit 0
 fi
-if [[ "$choice" == "1" ]]
+udppid=none
+function startNotify(){
+echo "Starting eero-bypass notify client..."
+nohup ncat --udp -k -l $UDPPort --sh-exec "eero-bypass.sh udp" &
+udppid=$!
+}
+case "$NotifyMode" in
+    1) startNotify ;;
+    2)  startNotify
+exit 0;;
+    *) false ;;
+esac
+ncatpid=none
+if [ "$httpport" != "" ]
 then
-killall python3 chrome ncat
+echo "Starting web server..."
+touch /tmp/eerostatus.http
+nohup ncat -k -l $httpport --sh-exec "cat /tmp/eerostatus.http" &
+ncatpid=$!
 fi
-exit 0
-fi
-touch /tmp/eero-status.http
-if [[ "$eero_status_port" != "0" ]]
-then
-nohup ncat -k -l $eero_status_port --sh-exec "/usr/local/bin/eero-httpd.sh" > eero-httpd.log 2>&1 &
-fi
-nohup python3 /usr/local/bin/eero-bypass.py $dns_eero $timelimit > eero-bypass.log 2>&1 &
+echo "Starting up eeroBypass Service..."
+while true; do
+python3 /usr/local/bin/eero-bypass.py $timelimit $$ $ncatpid $broadcastIP $UDPPort $udppid $delay $timeAlert
+echo "Restarting in 15 seconds..."
+sleep 15s
+echo "Now restarting..."
+done
