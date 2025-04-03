@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 source /etc/eero-bypass.conf
 if [ "$1" == "udp" ]
 then
@@ -10,10 +10,16 @@ EERO_DISCONNECT) notify-send "eeroBypass" "$now - eero Router has disconnected" 
 EERO_RECONNECT) notify-send "eeroBypass" "$now - eero Router has been reconnected" ;;
 EERO_TIMER*)
  timerwarning=$(echo "$eeroOp" | grep -o '[0-9]\+')
- notify-send "eeroBypass" "$now - Internet will be lost in $timerwarning minutes"
+ notify-send "eeroBypass" "$now - Internet will be lost in $timerwarning"
 exit 0
  ;;
-*)exit 1 ;;
+EERO_SEC*)
+seconds=$(echo "$eeroOp" | grep -o '[0-9]\+')
+printf "%02d:%02d:%02d" $((seconds/3600)) $(((seconds%3600)/60)) $((seconds%60)) > /tmp/eero-seconds.txt
+exit 0
+;;
+*) echo "$eeroOp is not a valid opcode" >> /tmp/eero-udp.log
+exit 1 ;;
 esac
 $soundPlayer /usr/share/eero-bypass/eerodefault.wav
 exit 0
@@ -26,9 +32,9 @@ udppid=$!
 }
 case "$NotifyMode" in
     1) startNotify ;;
-    2)  startNotify
-exit 0;;
-    *) false ;;
+    2) startNotify
+exit 0
+;;
 esac
 ncatpid=none
 if [ "$httpport" != "" ]
