@@ -27,6 +27,7 @@ echo "$desktop_entry" > "$desktop_file"
 chmod +x "$desktop_file"
 else
 if [[ "$choice" != "no" ]]
+then
 echo "Please type yes or no in lowercase letters."
 createDesktopFile
 fi
@@ -42,20 +43,19 @@ fi
 USERNAME=${SUDO_USER:-$USER}
 
 # Install dependencies
-apt install -y python3-selenium ncat
-
+apt install -y python3-selenium ncat libnotify-bin alsa-utils
+if [ ! -d "/usr/share/eero-bypass" ]; then
+  mkdir -p "/usr/share/eero-bypass"
+fi
 # Copy necessary files to /usr/local/bin
-cp eero-httpd.sh /usr/local/bin/
 cp eero-bypass.conf /etc/eero-bypass.conf
 cp eero-bypass.py /usr/local/bin/
 cp eero-bypass.sh /usr/local/bin/
-
-createDesktopFile
+cp eerodefault.wav /usr/share/eero-bypass
+chmod +r /usr/share/eero-bypass/eerodefault.wav
 # Make scripts executable
 chmod +x /usr/local/bin/eero-bypass.sh
-chmod +x /usr/local/bin/eero-httpd.sh
 
-createDesktopFile()
 # Final messages
 echo ""
 echo "Before starting the app you may want to edit /etc/eero-bypass.conf"
