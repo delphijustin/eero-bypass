@@ -7,6 +7,5 @@ rmdir /usr/share/eero-bypass
 if [[ "$1" == "all" ]]
 then
 rm /etc/eero-bypass.conf
-rm /tmp/eero-status.http
+rm /tmp/eerostatus.http
 fi
-rm ~/.config/autostart/eero-bypass.desktop
